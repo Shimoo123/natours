@@ -13,7 +13,7 @@ export const displayMap = locations => {
     // zoom: 10,
     // interactive: false
   });
-
+map.setStyle('mapbox://styles/shimaamahmoud1/ckirkpdb502jz1ao7v7lol8wi');
   const bounds = new mapboxgl.LngLatBounds();
 
   locations.forEach(loc => {
