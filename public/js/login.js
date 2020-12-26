@@ -62,3 +62,25 @@ export const signup = async (name ,email, password , passwordConfirm) => {
     showAlert('error', err.response.data.message);
   }
 };
+
+
+export const forgotPassword = async (email, password) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: '/api/v1/users/forgotPassword',
+      data: {
+        email
+      }
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Check your email!');
+      window.setTimeout(() => {
+        location.assign('/login');
+      }, 1500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};
