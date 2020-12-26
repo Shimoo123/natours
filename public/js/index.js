@@ -1,13 +1,14 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
-import {signup, login, logout } from './login';
+import {signup, login, logout,forgotPassword } from './login';
 import { updateSettings } from './updateSettings';
-import { bookTour } from './stripe';
+//import { bookTour } from './stripe';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
 const signupForm = document.querySelector('.form--signup');
+const forgotPassForm = document.querySelector('.form--forgotPass');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
@@ -26,6 +27,13 @@ if (loginForm)
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     login(email, password);
+  });
+
+  if (forgotPassForm)
+  forgotPassForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    forgotPassword(email);
   });
 
   if (signupForm)

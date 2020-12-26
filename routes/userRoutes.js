@@ -1,19 +1,16 @@
 /* eslint-disable prettier/prettier */
 const express = require('express');
-const router = express.Router();  
+  
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 
-const reviewRouter = require('../routes/reviewRoutes');
-
-router.use('/:userId/reviews/', reviewRouter);
-
+const router = express.Router();
 
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 router.post('/signup', authController.signup);
 
-router.post('/forgotPassword', authController.forgotPassword);
+router.post('/forgotPassword',authController.forgotPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
 router.patch(
