@@ -14,6 +14,7 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
+const forgotPassForm = document.querySelector('.form--forgotPass');
 
 // DELEGATION
 if (mapBox) {
@@ -29,7 +30,7 @@ if (loginForm)
     login(email, password);
   });
 
-  if (forgotPassForm)
+if (forgotPassForm)
   forgotPassForm.addEventListener('submit', e => {
     e.preventDefault();
     const email = document.getElementById('email').value;
