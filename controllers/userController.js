@@ -104,6 +104,8 @@ exports.createUser = (req, res) => {
   });
 };
 
+
+
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
 

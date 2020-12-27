@@ -50,7 +50,10 @@ exports.createOne = Model =>
 
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
+    
     let query = Model.findById(req.params.id);
+    
+    console.log(query);
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
 
@@ -71,7 +74,7 @@ exports.getAll = Model =>
     // To allow for nested GET reviews on tour (hack)
     let filter = {};
     if (req.params.tourId) filter = { tour: req.params.tourId };
-
+    //else if(req.user.id) filter ={user : req.user.id};
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()

@@ -3,6 +3,7 @@ const express = require('express');
   
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const reviewRouter = require('../routes/reviewRoutes');
 
 const router = express.Router();
 
@@ -28,7 +29,6 @@ router
 .post(userController.createUser);
 router
 .route('/:id')
-//.get(reviewController.getAllReviews)
 .get(userController.getUser)
 .patch(userController.updateUser)
 .delete(userController.deleteUser);

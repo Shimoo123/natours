@@ -1,11 +1,12 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
-import {signup, login, logout,forgotPassword } from './login';
+import {signup, login, logout,forgotPassword} from './login';
 import { updateSettings } from './updateSettings';
 //import { bookTour } from './stripe';
 
 // DOM ELEMENTS
+
 const mapBox = document.getElementById('map');
 const signupForm = document.querySelector('.form--signup');
 const forgotPassForm = document.querySelector('.form--forgotPass');

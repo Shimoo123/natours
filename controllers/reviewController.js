@@ -1,15 +1,31 @@
 /* eslint-disable prettier/prettier */
 const Review = require('../models/reviewModel');
+//const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
-// const catchAsync = require('./../utils/catchAsync');
+
 
 exports.setTourUserIds = (req, res, next) => {
   // Allow nested routes
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user.id;
+  
   next();
 };
-
+exports.getMyReviews= async (req, res) => {
+  
+  const doc =await Review.find({user:req.user.id});
+  console.log(doc.length);
+  const docs = JSON.stringify(doc); 
+  console.log(docs);
+  // SEND RESPONSE
+  res.status(200).json({
+    status: 'success',
+    results: doc.length,
+    data: {
+      data: doc
+    }
+  });
+};
 exports.getAllReviews = factory.getAll(Review);
 exports.getReview = factory.getOne(Review);
 exports.createReview = factory.createOne(Review);
