@@ -69,8 +69,7 @@ exports.getMyReviewsForm = catchAsync(async (req, res) => {
   const tours = await Tour.find({ _id: { $in: tourIDs } });
   res.status(200).render('my-reviews', {
     title: 'My Reviews',
-    tours,
-    docs
+    tours
   });
 });
 

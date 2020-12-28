@@ -3,7 +3,7 @@ import '@babel/polyfill';
 import { displayMap } from './mapbox';
 import {signup, login, logout,forgotPassword} from './login';
 import { updateSettings } from './updateSettings';
-//import { bookTour } from './stripe';
+import { bookTour } from './stripe';
 
 // DOM ELEMENTS
 
@@ -15,6 +15,7 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
+const likeBtn = document.getElementById('like-tour');
 
 
 // DELEGATION
@@ -86,4 +87,12 @@ if (bookBtn)
     e.target.textContent = 'Processing...';
     const { tourId } = e.target.dataset;
     bookTour(tourId);
+  });
+
+  if (likeBtn)
+  likeBtn.addEventListener('click', e => {
+    e.target.textContent = 'Unlike';
+    const { tourId } = e.target.dataset;
+    //bookTour(tourId);
+    document.getElementById("like-count").innerHTML = "New text!";
   });

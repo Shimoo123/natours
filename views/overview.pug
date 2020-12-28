@@ -43,3 +43,5 @@ block content
               | 
               span.card__footer-text= `rating (${tour.ratingsQuantity})`
             a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details
+            button.btn.btn--green.span-all-rows#like-tour(like-tour-id=`${tour.id}`) Like
+            p.card__ratings#like-count
