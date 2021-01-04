@@ -1,0 +1,12 @@
+extends base
+
+block content
+  main.main
+    .token-form
+      h2.heading-secondary.ma-bt-lg Please enter Reset Token 
+      form.form.form--token
+        .form__group
+          label.form__label(for='token') Reset Token
+          input#token.form__input(type='String', required)
+        .form__group
+          button.btn.btn--green Reset Password
