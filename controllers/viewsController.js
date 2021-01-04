@@ -3,6 +3,7 @@ const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
 const Review = require('../models/reviewModel');
+const Likes = require('../models/likesModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -22,7 +23,10 @@ exports.getTour = catchAsync(async (req, res, next) => {
   // 1) Get the data, for the requested tour (including reviews and guides)
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: 'reviews',
-    fields: 'review rating user'
+    fields: 'review rating user _id'
+  }).populate({
+    path: 'bookings',
+    fields: 'booked'
   });
 
   if (!tour) {
@@ -56,20 +60,31 @@ exports.getSignupForm = (req, res) => {
   });
 };
 
+exports.getTokenForm = (req, res) => {
+  res.status(200).render('tokenPage', {
+    title: 'Reset Token'
+  });
+};
+
+exports.getResetForm = (req, res) => {
+  res.status(200).render('resetPassword', {
+    title: 'Reset Password'
+  });
+};
+
 exports.getforgotPassForm = (req, res) => {
   res.status(200).render('forgotpassword', {
     title: 'Forgot Password'
   });
 };
 
-exports.getMyReviewsForm = catchAsync(async (req, res) => {
+exports.getMyReviewsForm = catchAsync(async (req, res,next) => {
+  
   const docs = await Review.find({user:req.user.id});
- 
-  const tourIDs = docs.map(el => el.tour);
-  const tours = await Tour.find({ _id: { $in: tourIDs } });
+  
   res.status(200).render('my-reviews', {
     title: 'My Reviews',
-    tours
+    docs
   });
 });
 
@@ -77,13 +92,27 @@ exports.getMyReviewsForm = catchAsync(async (req, res) => {
 exports.getMyTours = catchAsync(async (req, res, next) => {
   // 1) Find all bookings
   const bookings = await Booking.find({ user: req.user.id });
-
+console.log(`booking: ${bookings}`);
   // 2) Find tours with the returned IDs
   const tourIDs = bookings.map(el => el.tour);
   const tours = await Tour.find({ _id: { $in: tourIDs } });
 
   res.status(200).render('overview', {
     title: 'My Tours',
+    tours
+  });
+});
+
+exports.getMyFavTours = catchAsync(async (req, res, next) => {
+  // 1) Find all bookings
+  const fav = await Likes.find({ user: req.user.id });
+console.log(`fav: ${fav}`);
+  // 2) Find tours with the returned IDs
+  const tourIDs = fav.map(el => el.tour);
+  const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).render('overview', {
+    title: 'My Favorite Tours',
     tours
   });
 });

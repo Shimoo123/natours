@@ -76,7 +76,12 @@ const tourSchema = new mongoose.Schema(
       default: Date.now(),
       select: false
     },
-    startDates: [Date],
+    startDates: [
+      {
+       type : Date,
+      participants :Number
+     }
+   ],
     secretTour: {
       type: Boolean,
       default: false
@@ -133,6 +138,11 @@ tourSchema.virtual('reviews', {
   foreignField: 'tour',
   localField: '_id'
 });
+tourSchema.virtual('bookings', {
+  ref: 'Booking',
+  foreignField: 'tour',
+  localField: '_id'
+});
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 tourSchema.pre('save', function(next) {
@@ -180,8 +190,8 @@ tourSchema.post(/^find/, function(docs, next) {
 });
 
 // AGGREGATION MIDDLEWARE
-// tourSchema.pre('aggregate', function(next) {
-//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+ //likeSchema.pre('aggregate', function(next) {
+  // this.pipeline().unshift({ // });
 
 //   console.log(this.pipeline());
 //   next();

@@ -56,13 +56,19 @@ const userSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 }
 );
-
-/*// Virtual populate
+/*
+// Virtual populate
 userSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'user',
   localField: '_id'
-});*/
+});
+userSchema.virtual('bookings', {
+  ref: 'Booking',
+  foreignField: 'user',
+  localField: '_id'
+});
+*/
 userSchema.pre('save', async function(next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();

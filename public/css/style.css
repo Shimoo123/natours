@@ -945,6 +945,12 @@ body {
   text-shadow: none;
   border-color: #f7f7f7;
 }
+.nav_el--fp{
+  color: #777;
+  -webkit-transform: translateY(-2px);
+  transform: translateY(-2px);
+  text-shadow: 0 0.7rem 1rem black;
+}
 .nav__search {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -961,6 +967,7 @@ body {
     margin-bottom: 1.2rem;
   }
 }
+
 .nav__search-btn {
   background: none;
   border: none;
@@ -968,10 +975,18 @@ body {
   -webkit-transform: translateY(1px);
   transform: translateY(1px);
 }
+.nav__search-btn :visited{
+background: rgb(99, 145, 99);
+}
 .nav__search-btn svg {
-  height: 2rem;
-  width: 2rem;
-  fill: #f7f7f7;
+  height: 4rem;
+  width: 4rem;
+  fill: #7dd56f;
+}
+.nav__search-btn svg :focus{
+  height: 4rem;
+  width: 4rem;
+  fill: green;
 }
 .nav__search-input {
   font-family: inherit;

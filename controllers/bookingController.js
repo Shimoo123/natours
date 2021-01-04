@@ -4,6 +4,8 @@ const Tour = require('../models/tourModel');
 const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
+const alert = require('alert');
+const AppError = require('../utils/appError');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
@@ -11,6 +13,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   console.log(tour);
 
   // 2) Create checkout session
+  console.log(req.query);
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     success_url: `${req.protocol}://${req.get('host')}/my-tours/?tour=${
@@ -41,12 +44,26 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
   const { tour, user, price } = req.query;
-
-  if (!tour && !user && !price) return next();
+console.log(user);
+  if (!tour && !user  &&  !price) return next();
+  try{
   await Booking.create({ tour, user, price });
-
+  }catch(err){
+   
+      alert('There is already a booking for this tour!');
+  }
   res.redirect(req.originalUrl.split('?')[0]);
 });
+
+exports.checkbooking = async(req,res,next)=>{
+ 
+  
+  const bookings = await Booking.find({$and:[{  tour: req.params.tourId },  {user: req.user.id }]}).exec();
+  console.log(`booking=${bookings.length}`);
+if(!bookings.length) {
+  alert("you can only review your booked tours");   return next(new AppError('You have no booking for this tour', 404));}
+ next();
+};
 
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);

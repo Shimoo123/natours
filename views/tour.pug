@@ -4,8 +4,7 @@ include _reviewCard
 block append head
   script(src='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js')
   link(href='https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css' rel='stylesheet')
-  script(src='https://js.stripe.com/v2')
- 
+  script(src='https://js.stripe.com/v3')
 
 mixin overviewBox(label, text, icon)
   .overview-box__detail
@@ -19,10 +18,14 @@ block content
     .header__hero
       .header__hero-overlay &nbsp;
       img.header__hero-img(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
-
+  button.nav__search-btn#like-tour(value=`${tour.id},${user._id}`)
+    svg
+      use(xlink:href='/img/icons.svg#icon-thumbs-up')  
+  p.description__text#likes  
     .heading-box
       h1.heading-primary
         span= `${tour.name} tour`
+     
       .heading-box__group
         .heading-box__detail
           svg.heading-box__icon
@@ -32,7 +35,9 @@ block content
           svg.heading-box__icon
             use(xlink:href='/img/icons.svg#icon-map-pin')
           span.heading-box__text= tour.startLocation.description
-
+      
+    
+     
   section.section-description
     .overview-box
       div
@@ -75,7 +80,16 @@ block content
   section.section-reviews
     .reviews
       each review in tour.reviews
-        +reviewCard(review)
+        +reviewCard(review) 
+    span
+    |
+    span.label.form__label(for='review') 
+    form.form-user-review   
+      input#review.form__input(type='text', value="Write a review",  name='review')
+      if tour.bookings
+        button.btn.span-all-rows#write-review(value=`${tour.id}`) Post
+      else
+        a.btn.btn--green.span-all-rows(disabled) Post  
 
   section.section-cta
     .cta

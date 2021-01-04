@@ -15,7 +15,6 @@ const signToken = id => {
 
 const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
-
   res.cookie('jwt', token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -45,7 +44,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-   console.log(url);
   await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, req, res);
@@ -78,16 +76,9 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // 1) Getting token and check of it's there
+ // 1) Getting token and check of it's there
   let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
-  }
 
   if (!token) {
     return next(
@@ -169,8 +160,7 @@ exports.restrictTo = (...roles) => {
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
   try {
-  console.log(req.body.email);
-  console.log(req);
+  
   const user = await User.findOne({ email: req.body.email }).exec();
   if (!user) {
     return next(new AppError('There is no user with email address.', 404));
@@ -182,9 +172,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
  
-    const resetURL = `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    const resetURL = `${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
@@ -202,8 +190,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     );
   }
 });
-
-exports.resetPassword = catchAsync(async (req, res, next) => {
+/*
+exports.confirmToken = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto
     .createHash('sha256')
@@ -219,7 +207,11 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError('Token is invalid or has expired', 400));
   }
-  user.password = req.body.password;
+  
+});
+*/
+exports.resetPassword = catchAsync(async (req, res, next) => {
+user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
@@ -249,13 +241,3 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, req, res);
 });
 
-exports.preparePost =catchAsync( async(req,res,url,next) => {
-  axios(url,{
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-});

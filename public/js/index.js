@@ -1,21 +1,26 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
-import {signup, login, logout,forgotPassword} from './login';
-import { updateSettings } from './updateSettings';
+import {signup, login, logout,forgotPassword,confirmToken} from './login';
+import { updateSettings,postReview ,editReview} from './updateSettings';
 import { bookTour } from './stripe';
+import { countLikes } from './countLikes'
 
 // DOM ELEMENTS
 
 const mapBox = document.getElementById('map');
 const signupForm = document.querySelector('.form--signup');
 const forgotPassForm = document.querySelector('.form--forgotPass');
+const tokenForm = document.querySelector('.form--token');
+const resetForm = document.querySelector('.form--reset');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
-const userDataForm = document.querySelector('.form-user-data');
+const userDataForm = document.querySelector('.form form-user-data');
+const reviewForm = document.querySelector('.form-user-review');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
 const likeBtn = document.getElementById('like-tour');
+const reviewText = document.getElementById('edit-review-text');
 
 
 // DELEGATION
@@ -30,6 +35,13 @@ if (loginForm)
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     login(email, password);
+  });
+
+  if (tokenForm)
+  tokenForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const validToken = document.getElementById('token').value;
+    confirmToken(validToken);
   });
 
 if (forgotPassForm)
@@ -49,10 +61,18 @@ if (forgotPassForm)
     signup(name,email, password,passwordConfirm);
   });
 
+  if (resetForm)
+  resetForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+    signup( password,passwordConfirm);
+  });
+
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
 if (userDataForm)
-  userDataForm.addEventListener('submit', e => {
+  userDataForm.addEventListener('submit',async e => {
     e.preventDefault();
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
@@ -60,7 +80,7 @@ if (userDataForm)
     form.append('photo', document.getElementById('photo').files[0]);
     console.log(form);
 
-    updateSettings(form, 'data');
+   await updateSettings(form, 'data');
   });
 
 if (userPasswordForm)
@@ -89,10 +109,30 @@ if (bookBtn)
     bookTour(tourId);
   });
 
+
+  if (reviewForm)
+  reviewForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const newReview = document.getElementById('review').value;
+    console.log(newReview);
+    const  tourId  =  document.getElementById('write-review').value;
+    console.log(tourId);
+    postReview(newReview,tourId);
+  });
+
   if (likeBtn)
   likeBtn.addEventListener('click', e => {
-    e.target.textContent = 'Unlike';
-    const { tourId } = e.target.dataset;
-    //bookTour(tourId);
-    document.getElementById("like-count").innerHTML = "New text!";
+
+    const tour = likeBtn.value.split(',')[0];
+    const user = likeBtn.value.split(',')[1];
+    
+    countLikes(tour,user);
   });
+
+  if (reviewText) {
+    reviewText.addEventListener('blur', e => {
+    const editedReview = reviewText.innerText;
+    const reviewId  = e.target.attributes[3].nodeValue;
+    editReview(editedReview,reviewId) ; 
+  });
+}
