@@ -130,7 +130,7 @@ if (bookBtn)
       console.log(e.target);
     const editedReview = reviewText.innerText;
     const reviewId  = e.target.attributes[3].nodeValue;
-    console.log(reviewId);
+    console.log(`id: ${reviewId}`);
     editReview(editedReview,reviewId) ; 
   });
 }

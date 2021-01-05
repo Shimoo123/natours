@@ -14,9 +14,7 @@ exports.setTourUserIds = (req, res, next) => {
 exports.getMyReviews= async (req, res) => {
   
   const doc =await Review.find({user:req.user.id});
-  (doc.length);console.log
-  const docs = JSON.stringify(doc); 
-  console.log(docs);
+  
   // SEND RESPONSE
   res.status(200).json({
     status: 'success',
