@@ -10,10 +10,7 @@ const AppError = require('../utils/appError');
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
   const tour = await Tour.findById(req.params.tourId);
-  console.log(tour);
-
   // 2) Create checkout session
-  console.log(req.query);
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     success_url: `${req.protocol}://${req.get('host')}/my-tours/?tour=${
@@ -59,7 +56,6 @@ exports.checkbooking = async(req,res,next)=>{
  
   
   const bookings = await Booking.find({$and:[{  tour: req.params.tourId },  {user: req.user.id }]}).exec();
-  console.log(`booking=${bookings.length}`);
 if(!bookings.length) {
   alert("you can only review your booked tours");   return next(new AppError('You have no booking for this tour', 404));}
  next();

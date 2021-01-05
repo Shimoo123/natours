@@ -1,7 +1,6 @@
 /* eslint-disable */
 import axios from 'axios';
 import { showAlert } from './alerts';
-const mongoose = require('mongoose');
 
 // type is either 'password' or 'data'
 export const updateSettings = async (data, type) => {
@@ -13,7 +12,7 @@ export const updateSettings = async (data, type) => {
 
     const res = await axios({
       method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
+      //headers: {'Content-Type': 'application/json'},
       url,
       data
     });
@@ -28,9 +27,6 @@ export const updateSettings = async (data, type) => {
 
 export const postReview = async (data1,id) => {
   try {
-    
-  
-    var _id = mongoose.Types.ObjectId(id);
     const url = `/api/v1/tours/${id}/reviews`
     console.log(url);
     let request_body = {
@@ -38,7 +34,7 @@ export const postReview = async (data1,id) => {
     }
     const res = await axios({
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      //headers: {'Content-Type': 'application/json'},
       url:url,
       data:request_body
     });
@@ -65,7 +61,7 @@ export const editReview = async (data1,id) => {
     }
     const res = await axios({
       method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
+      //headers: {'Content-Type': 'application/json'},
       url:url,
       data:request_body
     });

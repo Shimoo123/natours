@@ -78,8 +78,6 @@ if (userDataForm)
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log(form);
-
    await updateSettings(form, 'data');
   });
 
@@ -114,9 +112,7 @@ if (bookBtn)
   reviewForm.addEventListener('submit', e => {
     e.preventDefault();
     const newReview = document.getElementById('review').value;
-    console.log(newReview);
     const  tourId  =  document.getElementById('write-review').value;
-    console.log(tourId);
     postReview(newReview,tourId);
   });
 
@@ -131,8 +127,10 @@ if (bookBtn)
 
   if (reviewText) {
     reviewText.addEventListener('blur', e => {
+      console.log(e.target);
     const editedReview = reviewText.innerText;
     const reviewId  = e.target.attributes[3].nodeValue;
+    console.log(reviewId);
     editReview(editedReview,reviewId) ; 
   });
 }
