@@ -126,7 +126,7 @@ if (bookBtn)
   });
 
   if (reviewText) {
-    reviewText.addEventListener('blur', e => {
+    reviewText.addEventListener('input', e => {
       console.log(e.target);
     const editedReview = reviewText.innerText;
     const reviewId  = e.target.attributes[3].nodeValue;
