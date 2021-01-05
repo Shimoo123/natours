@@ -7,13 +7,13 @@ const bookingController = require('../controllers/bookingController');
 const router = express.Router({ mergeParams: true });
 
 router.use(authController.protect);
-router.route('/my-reviews').get(reviewController.setTourUserIds,reviewController.getMyReviews);
+router.route('/my-reviews').get(reviewController.getMyReviews);
 router
   .route('/')
-  .get(reviewController.setTourUserIds,reviewController.getAllReviews)
+  .get(reviewController.getAllReviews)
   .post(
     authController.restrictTo('user'),
-    //reviewController.setTourUserIds,
+    reviewController.setTourUserIds,
     bookingController.checkbooking,
     reviewController.createReview
   );
